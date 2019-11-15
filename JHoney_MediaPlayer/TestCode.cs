@@ -142,6 +142,15 @@ namespace JHoney_MediaPlayer
                         MediaPlayer.Play();
                         IsPlaying = true;
                         CurrentPlayName = MediaPlayer.Source.OriginalString.Substring(MediaPlayer.Source.OriginalString.LastIndexOf("\\") + 1, MediaPlayer.Source.OriginalString.LastIndexOf(".") - MediaPlayer.Source.OriginalString.LastIndexOf("\\") - 1);
+                        while (true)
+                        {
+                            Duration = MediaPlayer.NaturalDuration.ToString().Substring(0, 8);
+
+                            if (Duration != "Automati")
+                            {
+                                break;
+                            }
+                        }
                     }
                 }
                 else
@@ -151,6 +160,15 @@ namespace JHoney_MediaPlayer
                     MediaPlayer.Play();                    
                     IsPlaying = true;
                     CurrentPlayName = MediaPlayer.Source.OriginalString.Substring(MediaPlayer.Source.OriginalString.LastIndexOf("\\") + 1, MediaPlayer.Source.OriginalString.LastIndexOf(".") - MediaPlayer.Source.OriginalString.LastIndexOf("\\") - 1);
+                    while (true)
+                    {
+                        Duration = MediaPlayer.NaturalDuration.ToString().Substring(0, 8);
+
+                        if (Duration != "Automati")
+                        {
+                            break;
+                        }
+                    }
                 }
             }
             else
@@ -190,6 +208,7 @@ namespace JHoney_MediaPlayer
                 if(MusicFileList.Count==NowIndex+1)
                 {
                     //리스트 마지막이었음 이후 처리
+                    
                 }
                 else if(MusicFileList.Count>NowIndex+1)
                 {

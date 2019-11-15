@@ -93,6 +93,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converter\ConvertBoolToIcon.cs" />
     <Compile Include="Converter\ConvertBoolToVisibility.cs" />
     <Compile Include="Converter\ConvertBoolToVisibilityInverter.cs" />
     <Compile Include="Converter\ConvertDurationToString.cs" />

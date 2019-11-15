@@ -9,6 +9,7 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:iconsPack="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:pEvent="http://www.codeplex.com/prism"
+             xmlns:myns="clr-namespace:JHoney_MediaPlayer"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
@@ -28,13 +29,21 @@
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" >
-            <TextBlock Text="{Binding TestCode.CurrentPlayName, StringFormat='Title : {0}'}" />
+        <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Margin="5" >
+            <TextBlock Text="{Binding TestCode.CurrentPlayName, StringFormat='Title : {0}'}" VerticalAlignment="Center" />
         </Grid>
 
         <Grid Grid.Column="2" Grid.Row="0">
-            <TextBlock Text="{Binding TestCode.VolumeCurrent, StringFormat='{}:{0:P0}'}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            <Slider x:Name="slider" Minimum="0" Maximum="1.5" Value="{Binding TestCode.VolumeCurrent}" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Style="{DynamicResource SquareButtonStyle}" Command="{Binding MuteCommand}" CommandParameter="Stop" Margin="5" >
+                <iconsPack:PackIconMaterial Kind="{Binding VolumeIcon}" />
+            </Button>
+
+            <TextBlock Grid.Column="1" Text="{Binding TestCode.VolumeCurrent, StringFormat='{}:{0:P0}'}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" />
+            <Slider x:Name="slider" Grid.Column="1" Minimum="0" Maximum="1.5" Value="{Binding TestCode.VolumeCurrent}" Width="40" Margin="5" >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="ValueChanged">
                         <pEvent:InvokeCommandAction Command="{Binding VolumeChangeCommand}" CommandParameter="{Binding Value, ElementName=slider}"/>
@@ -48,7 +57,13 @@
         <TextBlock Grid.Column="0" Grid.Row="1"  Text="{Binding TestCode.CurrentDuration}" />
         <Grid Grid.Column="1" Grid.Row="1" Margin="5">
             <Border BorderThickness="1" BorderBrush="Black">
-                <Controls:MetroProgressBar Value="{Binding TestCode.ProgressCurrent}" Maximum="1000" />
+                <Controls:MetroProgressBar Value="{Binding TestCode.ProgressCurrent}" Maximum="1000" >
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseUp">
+                            <pEvent:InvokeCommandAction Command="{Binding ProgressMouseUPCommand}"  />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Controls:MetroProgressBar>
             </Border>
 
         </Grid>
@@ -56,18 +71,36 @@
 
         <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding TestCode.Duration}" />
 
-        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2">
-            <Button Style="{StaticResource CircleButtonBase}" Visibility="{Binding TestCode.IsPlaying, Converter={cvt:ConvertBoolToVisibilityInverter}}" Command="{Binding PlayCommand}" >
-                <iconsPack:FontAwesome Kind="PlaySolid" />
-            </Button>
-            <Button Style="{StaticResource CircleButtonBase}" Visibility="{Binding TestCode.IsPlaying, Converter={cvt:ConvertBoolToVisibility}}" Command="{Binding StopCommand}" CommandParameter="Pause" >
-                <iconsPack:FontAwesome Kind="PauseSolid" />
-            </Button>
-            <Button Style="{StaticResource CircleButtonBase}" Command="{Binding StopCommand}" CommandParameter="Stop" >
-                <iconsPack:FontAwesome Kind="StopSolid" />
-            </Button>
+        <Grid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Orientation="Horizontal" >
+                <Button Style="{StaticResource CircleButtonBase}" Command="{Binding ForwardBackwardCommand}" CommandParameter="Backward" >
+                    <iconsPack:FontAwesome Kind="BackwardSolid" />
+                </Button>
+                <Button Style="{StaticResource CircleButtonBase}" Visibility="{Binding TestCode.IsPlaying, Converter={cvt:ConvertBoolToVisibilityInverter}}" Command="{Binding PlayCommand}" >
+                    <iconsPack:FontAwesome Kind="PlaySolid" />
+                </Button>
+                <Button Style="{StaticResource CircleButtonBase}" Visibility="{Binding TestCode.IsPlaying, Converter={cvt:ConvertBoolToVisibility}}" Command="{Binding StopCommand}" CommandParameter="Pause" >
+                    <iconsPack:FontAwesome Kind="PauseSolid" />
+                </Button>
+                <Button Style="{StaticResource CircleButtonBase}" Command="{Binding StopCommand}" CommandParameter="Stop" >
+                    <iconsPack:FontAwesome Kind="StopSolid" />
+                </Button>
+                <Button Style="{StaticResource CircleButtonBase}" Command="{Binding ForwardBackwardCommand}" CommandParameter="Forward" >
+                    <iconsPack:FontAwesome Kind="ForwardSolid" />
+                </Button>
+            </StackPanel>
 
-        </StackPanel>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" >
+                <ToggleButton Style="{DynamicResource MetroFlatToggleButton}" Margin="5" IsChecked="{Binding IsUseShuffle}" >
+                    <iconsPack:Material Kind="{Binding ShuffleIcon}" />
+                </ToggleButton>
+            </StackPanel>
+        </Grid>
+        
 
     </Grid>
 </UserControl>
