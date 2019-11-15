@@ -1,0 +1,60 @@
+﻿<UserControl x:Class="JHoney_MediaPlayer.View.ListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:JHoney_MediaPlayer.View"
+             xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:iconsPack="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:pEvent="http://www.codeplex.com/prism"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" >
+    <UserControl.Resources>
+        <ResourceDictionary Source="/JHoney_MediaPlayer;component/Styles/ButtonStyleDictionary.xaml" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <DataGrid Grid.Row="0" ItemsSource="{Binding TestCode.MusicFileList}" IsReadOnly="True" AutoGenerateColumns="False" SelectionUnit="FullRow" SelectedIndex="{Binding SelectedIndex}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <pEvent:InvokeCommandAction Command="{Binding ListDoubleClickCommand}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="FileName" Binding="{Binding FileName.FileName_OnlyName}" Width="*" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="{Binding TestCode.MusicFileList.Count,StringFormat=Total : {0}}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5"  />
+            <StackPanel Grid.Column="1" Orientation="Horizontal" >
+                <Controls:SplitButton Style="{StaticResource SplitButtonBase}" ItemsSource="{Binding ButtonAddCommandList}" SelectedIndex="0" >
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click" >
+                            <pEvent:InvokeCommandAction Command="{Binding ButtonAddCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <Controls:SplitButton.Icon>
+                        <iconsPack:PackIconOcticons Width="20" Height="20" Kind="DiffAdded" />
+                    </Controls:SplitButton.Icon>
+                </Controls:SplitButton>
+
+                <Controls:SplitButton Style="{StaticResource SplitButtonBase}" ItemsSource="{Binding ButtonRemoveCommandList}" SelectedIndex="0" >
+                    <Controls:SplitButton.Icon>
+                        <iconsPack:PackIconOcticons Width="20" Height="20" Kind="DiffRemoved" />
+                    </Controls:SplitButton.Icon>
+                </Controls:SplitButton>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>
